@@ -25,14 +25,20 @@ namespace TicTacToe_4x4
             InitializeComponent();
         }
 
+        List<Button> ListOfButtons = new List<Button>();
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             var button = (Button)sender;
-            if (button.Content != null)
-            {
-                button.Content = "X";
-            }
+            ListOfButtons.Add(button);
+            if (button.Content != null) button.Content = "X";
         }
 
+        private void Button_Click_Restart(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in ListOfButtons)
+            {
+                item.Content = "";
+            }
+        }
     }
 }
