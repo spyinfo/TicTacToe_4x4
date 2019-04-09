@@ -1,0 +1,15 @@
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4.csprojAssemblyReference.cache
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\MainWindow.g.cs
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\App.g.cs
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4_MarkupCompile.cache
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4_MarkupCompile.lref
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\bin\Debug\TicTacToe 4x4.exe.config
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\bin\Debug\TicTacToe 4x4.exe
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\bin\Debug\TicTacToe 4x4.pdb
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\MainWindow.baml
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4.g.resources
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe_4x4.Properties.Resources.resources
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4.csproj.GenerateResource.cache
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4.csproj.CoreCompileInputs.cache
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4.exe
+C:\Users\Spyinfo\Desktop\College\Прикладное программирование\TicTacToe 4x4\TicTacToe 4x4\obj\Debug\TicTacToe 4x4.pdb
