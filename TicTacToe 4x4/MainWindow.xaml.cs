@@ -26,19 +26,31 @@ namespace TicTacToe_4x4
         }
 
         List<Button> ListOfButtons = new List<Button>();
+
         private void Button_Click(object sender, RoutedEventArgs e)
         { 
             var button = (Button)sender;
             ListOfButtons.Add(button);
-            if (button.Content != null) button.Content = "X";
+            if (button.Content != null) button.Content = "X"; 
         }
 
         private void Button_Click_Restart(object sender, RoutedEventArgs e)
         {
-            foreach (var item in ListOfButtons)
+            foreach (var element in ListOfButtons)
             {
-                item.Content = "";
+                element.Content = "";
             }
+        }
+
+        /// <summary>
+        /// О программе
+        /// </summary>
+        private void Button_Click_About(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Developed by Parviz Abdulloev"
+            + Environment.NewLine 
+            + "for Glusker A.I. in the course of practical work."
+            + Environment.NewLine, "About");
         }
     }
 }
