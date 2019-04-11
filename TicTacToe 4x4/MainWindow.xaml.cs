@@ -21,6 +21,7 @@ namespace TicTacToe_4x4
     public partial class MainWindow : Window
     {
         private List<Button> ListOfButtons;
+        private List<Button> BEST_MOVES;
 
         public MainWindow()
         {
@@ -31,43 +32,47 @@ namespace TicTacToe_4x4
                 B1, B2, B3, B4,
                 C1, C2, C3, C4,
                 D1, D2, D3, D4 };
+
+            BEST_MOVES = new List<Button>() {
+                B2, C3, B3, C2,
+                A1, A4, D1, D4,
+                A2, A3, B1, C1,
+                D2, D3, B4, C4};
         }
 
 
         private void Button_Click(object sender, RoutedEventArgs e)
         { 
             var button = (Button)sender;
-            if (button.Content != null && button.Content != "O" && button.Content != "X")
+            if (ListOfButtons.Contains(button))
             {
                 button.Content = "X";
+                BEST_MOVES.Remove(button);
                 var move = MoveAI(ListOfButtons);
-                move.Content = "O";
             }
         }
 
-        private void Button_Click_Restart(object sender, RoutedEventArgs e)
-        {
-            foreach (var element in ListOfButtons)
-            {
-                element.Content = "";
-            }
-        }
+        //private void Button_Click_Restart(object sender, RoutedEventArgs e)
+        //{
+        //    foreach (var element in ListOfButtons)
+        //    {
+        //        element.Content = "";
+        //    }
+        //}
 
         /// <summary>
-        /// Ход компьютера (пока выбирает рандомно)
+        /// Ход компьютера
         /// </summary>
         private Button MoveAI(List<Button> ListOfButtons)
         {
-            List<Button> notClickedButtons = new List<Button>();
+            Button move = new Button();
 
-            foreach (var button in ListOfButtons)
+            foreach (var button in BEST_MOVES)
             {
-                if (button.IsEnabled == true) notClickedButtons.Add(button);
+                button.Content = "O";
+                BEST_MOVES.Remove(button);
+                return move;
             }
-
-            Random random = new Random();
-            int index = random.Next(0, notClickedButtons.Count);
-            Button move = notClickedButtons.ElementAt(index);
             return move;
         }
 

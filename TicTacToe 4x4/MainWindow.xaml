@@ -33,7 +33,7 @@
         <Button Name="D4" Content="" HorizontalAlignment="Left" Margin="327,209,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "16"/>
 
 
-        <Button Content="Restart" HorizontalAlignment="Left" Margin="190,288,0,0" VerticalAlignment="Top" Width="85" Height="27" Background="#FF071544" Foreground="White" Click="Button_Click_Restart"/>
+        <Button Content="Restart" HorizontalAlignment="Left" Margin="190,288,0,0" VerticalAlignment="Top" Width="85" Height="27" Background="#FF071544" Foreground="White" />
         <Button Content="About" HorizontalAlignment="Left" Margin="335,288,0,0" VerticalAlignment="Top" Width="85" Height="27" Background="#FF370C4F" Foreground="White" Click="Button_Click_About"/>
 
     </Grid>
