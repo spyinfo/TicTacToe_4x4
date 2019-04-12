@@ -55,7 +55,9 @@ namespace TicTacToe_4x4
             }
         }
 
-
+        /// <summary>
+        /// Проверяем, есть ли победитель
+        /// </summary>
         private void CheckWinner()
         {
             if ((A1.ContentStringFormat == "X") && (A2.ContentStringFormat == "X") && (A3.ContentStringFormat == "X") && (A4.ContentStringFormat == "X"))
