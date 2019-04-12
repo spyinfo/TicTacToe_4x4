@@ -20,13 +20,24 @@ namespace TicTacToe_4x4
         public const string O_SYMBOL = "O";
         public const string X_SYMBOL = "X";
 
-        public static void MoveAI(List<Button> ListOfButtons)
+    public static void MoveAI(List<Button> ListOfButtons, List<Button> BEST_MOVES)
         {
-            if (isAIWin(ListOfButtons))
+            if (isAIWin(ListOfButtons)) // если следующим ходом выиграет компьютер, то выбираем этот ход
                 return;
 
-            else if (isHumanWin(ListOfButtons))
+            else if (isHumanWin(ListOfButtons)) // если следующим ходом выиграет человек, то блокируем этот ход
                 return;
+
+            foreach (var button in BEST_MOVES) // иначе выбираем лучший из доступных ходов
+            {
+                if (button.IsEnabled == true)
+                {
+                    button.Content = O_SYMBOL;
+                    button.IsEnabled = false;
+                    BEST_MOVES.Remove(button);
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -37,7 +48,6 @@ namespace TicTacToe_4x4
             button.Content = O_SYMBOL;
             button.IsEnabled = false;
         }
-
 
         /// <summary>
         /// Если следующим ходом выиграет компьютер, то выбираем этот ход
@@ -70,27 +80,6 @@ namespace TicTacToe_4x4
                 return true;
             return false;
         }
-
-        private static bool isAI(Button button)
-        {
-            if (button.Content.Equals(O_SYMBOL))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool isEnemy(Button button)
-        {
-            if (button.Content.Equals(X_SYMBOL))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
 
         /// <summary>
         /// Проверяем может ли компьютер следующим ходом выиграть игру по горизонтали
@@ -221,6 +210,9 @@ namespace TicTacToe_4x4
             return false;
         }
 
+        /// <summary>
+        /// Проверяем 1-ю диагональ (с левого верхнего угла до правого нижнего угла)
+        /// </summary>
         private static bool checkTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight)
         {
             if (isAI(firstTopLeft) && isAI(secondTopLeft) && isAI(firstBottomRight))
@@ -258,6 +250,9 @@ namespace TicTacToe_4x4
             return false;
         }
 
+        /// <summary>
+        /// Проверяем 2-ю диагональ (с левого нижнего угла до правого верхнего угла)
+        /// </summary>
         private static bool checkBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight)
         {
             if (isAI(firstBottomLeft) && isAI(secondBottomLeft) && isAI(firstTopRight))
@@ -425,6 +420,9 @@ namespace TicTacToe_4x4
             return false;
         }
 
+        /// <summary>
+        /// Проверяем 1-ю диагональ (с левого верхнего угла до правого нижнего угла)
+        /// </summary>
         private static bool checkEnemyTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight)
         {
             if (isEnemy(firstTopLeft) && isEnemy(secondTopLeft) && isEnemy(firstBottomRight))
@@ -462,6 +460,9 @@ namespace TicTacToe_4x4
             return false;
         }
 
+        /// <summary>
+        /// Проверяем 2-ю диагональ (с левого нижнего угла до правого верхнего угла)
+        /// </summary>
         private static bool checkEnemyBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight)
         {
             if (isEnemy(firstBottomLeft) && isEnemy(secondBottomLeft) && isEnemy(firstTopRight))
@@ -499,5 +500,28 @@ namespace TicTacToe_4x4
             return false;
         }
 
+
+        /*************************
+         * ДОПОЛНИТЕЛЬНЫЕ МЕТОДЫ *
+         *************************/
+        private static bool isAI(Button button)
+        {
+            if (button.Content.Equals(O_SYMBOL))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool isEnemy(Button button)
+        {
+            if (button.Content.Equals(X_SYMBOL))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

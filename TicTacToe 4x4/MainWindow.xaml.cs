@@ -21,6 +21,7 @@ namespace TicTacToe_4x4
     public partial class MainWindow : Window
     {
         private List<Button> ListOfButtons;
+        public static List<Button> BEST_MOVES;
 
         public MainWindow()
         {
@@ -32,6 +33,14 @@ namespace TicTacToe_4x4
                 B1, B2, B3, B4,
                 C1, C2, C3, C4,
                 D1, D2, D3, D4 };
+
+            // Список кнопок (полей) от лучшего к худшему
+            BEST_MOVES = new List<Button>() {
+                B2, C3, B3, C2,
+                A1, D4, D1, A4,
+                A2, A3, B1, C1,
+                D2, D3, B4, C4};
+
         }
 
 
@@ -40,8 +49,9 @@ namespace TicTacToe_4x4
             var button = (Button)sender;
             button.Content = "X";
             button.IsEnabled = false;
+            BEST_MOVES.Remove(button);
 
-            AI.MoveAI(ListOfButtons);
+            AI.MoveAI(ListOfButtons, BEST_MOVES);
 
             CheckWinner();
         }
@@ -53,6 +63,13 @@ namespace TicTacToe_4x4
                 button.IsEnabled = true;
                 button.Content = "";
             }
+            BEST_MOVES = new List<Button> {
+                B2, C3, B3, C2,
+                A1, D4, D1, A4,
+                A2, A3, B1, C1,
+                D2, D3, B4, C4 };
+
+
         }
 
         /// <summary>
