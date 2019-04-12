@@ -5,36 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TicTacToe_4x4"
         mc:Ignorable="d"
-        Title="TicTacToe 4x4" Height="363" Width="486" ResizeMode="NoResize" Cursor="Arrow">
-    <Grid Margin="0,0,14,4">
+        Title="TicTacToe 4x4" Height="363" Width="326" ResizeMode="NoResize" Cursor="Arrow">
+    <Grid Margin="0,0,0,0" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="79"/>
+            <ColumnDefinition Width="79"/>
+            <ColumnDefinition Width="79"/>
+            <ColumnDefinition Width="79"/>
         </Grid.ColumnDefinitions>
 
-        <Button Name="A1" Content="" HorizontalAlignment="Left" Margin="48,23,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "1"/>
-        <Button Name="A2" Content="" HorizontalAlignment="Left" Margin="141,23,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "2"/>
-        <Button Name="A3" Content="" HorizontalAlignment="Left" Margin="234,23,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "3"/>
-        <Button Name="A4" Content="" HorizontalAlignment="Left" Margin="327,23,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "4"/>
-        <Button Name="B1" Content="" HorizontalAlignment="Left" Margin="48,85,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "5"/>
-        <Button Name="B2" Content="" HorizontalAlignment="Left" Margin="141,85,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "6"/>
-        <Button Name="B3" Content="" HorizontalAlignment="Left" Margin="234,85,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "7"/>
-        <Button Name="B4" Content="" HorizontalAlignment="Left" Margin="327,85,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "8"/>
-        <Button Name="C1" Content="" HorizontalAlignment="Left" Margin="48,147,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "9"/>
-        <Button Name="C2" Content="" HorizontalAlignment="Left" Margin="141,147,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "10"/>
-        <Button Name="C3" Content="" HorizontalAlignment="Left" Margin="234,147,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "11"/>
-        <Button Name="C4" Content="" HorizontalAlignment="Left" Margin="327,147,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "12"/>
-        <Button Name="D1" Content="" HorizontalAlignment="Left" Margin="48,209,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "13"/>
-        <Button Name="D2" Content="" HorizontalAlignment="Left" Margin="141,209,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "14"/>
-        <Button Name="D3" Content="" HorizontalAlignment="Left" Margin="234,209,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "15"/>
-        <Button Name="D4" Content="" HorizontalAlignment="Left" Margin="327,209,0,0" VerticalAlignment="Top" Width="93" Height="62" Click="Button_Click" FontSize="24" Tag = "16"/>
+        <Button x:Name="A1" Grid.Column="0" Grid.Row="1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "1"/>
+        <Button x:Name="A2" Grid.Column="1" Grid.Row="1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "2"/>
+        <Button x:Name="A3" Grid.Column="2" Grid.Row="1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "3"/>
+        <Button x:Name="A4" Grid.Column="3" Grid.Row="1" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "4"/>
+        <Button x:Name="B1" Grid.Column="0" Grid.Row="2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "5"/>
+        <Button x:Name="B2" Grid.Column="1" Grid.Row="2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "6"/>
+        <Button x:Name="B3" Grid.Column="2" Grid.Row="2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "7"/>
+        <Button x:Name="B4" Grid.Column="3" Grid.Row="2" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "8"/>
+        <Button x:Name="C1" Grid.Column="0" Grid.Row="3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "9"/>
+        <Button x:Name="C2" Grid.Column="1" Grid.Row="3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "10"/>
+        <Button x:Name="C3" Grid.Column="2" Grid.Row="3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "11"/>
+        <Button x:Name="C4" Grid.Column="3" Grid.Row="3" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "12"/>
+        <Button x:Name="D1" Grid.Column="0" Grid.Row="4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "13"/>
+        <Button x:Name="D2" Grid.Column="1" Grid.Row="4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "14"/>
+        <Button x:Name="D3" Grid.Column="2" Grid.Row="4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "15"/>
+        <Button x:Name="D4" Grid.Column="3" Grid.Row="4" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Height="61" Click="Button_Click" FontSize="24" Tag = "16"/>
 
 
-        <Button Content="Restart" HorizontalAlignment="Left" Margin="190,288,0,0" VerticalAlignment="Top" Width="85" Height="27" Background="#FF071544" Foreground="White" />
-        <Button Content="About" HorizontalAlignment="Left" Margin="335,288,0,0" VerticalAlignment="Top" Width="85" Height="27" Background="#FF370C4F" Foreground="White" Click="Button_Click_About"/>
+        <Button Content="Restart" HorizontalAlignment="Left" Margin="37,83,0,-49" VerticalAlignment="Top" Width="85" Height="27" Background="#FF071544" Foreground="White" Click="Button_Click_Restart" Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="4"/>
+        <Button Content="About" HorizontalAlignment="Left" Margin="35,83,0,-49" VerticalAlignment="Top" Width="85" Height="27" Background="#FF370C4F" Foreground="White" Click="Button_Click_About" Grid.ColumnSpan="2" Grid.Row="4"/>
 
     </Grid>
 </Window>
