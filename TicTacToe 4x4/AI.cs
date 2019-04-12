@@ -20,7 +20,10 @@ namespace TicTacToe_4x4
         public const string O_SYMBOL = "O";
         public const string X_SYMBOL = "X";
 
-    public static void MoveAI(List<Button> ListOfButtons, List<Button> BEST_MOVES)
+        delegate bool DelegateAIandEnemy(Button button);
+        
+
+        public static void MoveAI(List<Button> ListOfButtons, List<Button> BEST_MOVES)
         {
             if (isAIWin(ListOfButtons)) // если следующим ходом выиграет компьютер, то выбираем этот ход
                 return;
@@ -34,11 +37,11 @@ namespace TicTacToe_4x4
                 {
                     button.Content = O_SYMBOL;
                     button.IsEnabled = false;
-                    BEST_MOVES.Remove(button);
                     return;
                 }
             }
         }
+
 
         /// <summary>
         /// Ход компьютера
@@ -49,18 +52,23 @@ namespace TicTacToe_4x4
             button.IsEnabled = false;
         }
 
+
+
+        
         /// <summary>
         /// Если следующим ходом выиграет компьютер, то выбираем этот ход
         /// </summary>
         private static bool isAIWin(List<Button> ListOfButtons)
         {
-            if (isHorizontalWin(ListOfButtons))
+            DelegateAIandEnemy DelegateAI = isAI;
+
+            if (isHorizontalWin(ListOfButtons, isAI))
                 return true;
 
-            else if (isVerticalWin(ListOfButtons))
+            else if (isVerticalWin(ListOfButtons, isAI))
                 return true;
 
-            else if (isDiagonalWin(ListOfButtons))
+            else if (isDiagonalWin(ListOfButtons, isAI))
                 return true;
             return false;
         }
@@ -70,21 +78,27 @@ namespace TicTacToe_4x4
         /// </summary>
         private static bool isHumanWin(List<Button> ListOfButtons)
         {
-            if (isEnemyHorizontalWin(ListOfButtons))
+            DelegateAIandEnemy DelegateEnemy = isEnemy;
+
+            if (isHorizontalWin(ListOfButtons, isEnemy))
                 return true;
 
-            else if (isEnemyVerticalWin(ListOfButtons))
+            else if (isVerticalWin(ListOfButtons, isEnemy))
                 return true;
 
-            else if (isEnemyDiagonalWin(ListOfButtons))
+            else if (isDiagonalWin(ListOfButtons, isEnemy))
                 return true;
             return false;
         }
 
+
+
+
+
         /// <summary>
-        /// Проверяем может ли компьютер следующим ходом выиграть игру по горизонтали
+        /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по горизонтали
         /// </summary>
-        private static bool isHorizontalWin(List<Button> ListOfButtons)
+        private static bool isHorizontalWin(List<Button> ListOfButtons, DelegateAIandEnemy DelegateAIandEnemy)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -93,49 +107,27 @@ namespace TicTacToe_4x4
                 Button thirdButton = ListOfButtons.ElementAt((i * 4) + 2);
                 Button fouthButton = ListOfButtons.ElementAt((i * 4) + 3);
 
-                if (isAI(firstButton) && isAI(secondButton) && isAI(thirdButton))
-                {
-                    if (fouthButton.IsEnabled == true)
-                    {
-                        PerformMove(fouthButton);
-                        return true;
-                    }
-                }
+                //DelegateAIandEnemy DelegateAI = isAI;
 
-                else if (isAI(firstButton) && isAI(secondButton) && isAI(fouthButton))
-                {
-                    if (thirdButton.IsEnabled == true)
-                    {
-                        PerformMove(thirdButton);
-                        return true;
-                    }
-                }
+                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIandEnemy))
+                    return true;
 
-                else if (isAI(firstButton) && isAI(thirdButton) && isAI(fouthButton))
-                {
-                    if (secondButton.IsEnabled == true)
-                    {
-                        PerformMove(secondButton);
-                        return true;
-                    }
-                }
+                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIandEnemy))
+                    return true;
 
-                else if (isAI(secondButton) && isAI(thirdButton) && isAI(fouthButton))
-                {
-                    if (firstButton.IsEnabled == true)
-                    {
-                        PerformMove(firstButton);
-                        return true;
-                    }
-                }
+                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIandEnemy))
+                    return true;
+
+                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIandEnemy))
+                    return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Проверяем может ли компьютер следующим ходом выиграть игру по вертикали
+        /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по вертикали
         /// </summary>
-        private static bool isVerticalWin(List<Button> ListOfButtons)
+        private static bool isVerticalWin(List<Button> ListOfButtons, DelegateAIandEnemy DelegateAIandEnemy)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -144,50 +136,27 @@ namespace TicTacToe_4x4
                 Button thirdButton = ListOfButtons.ElementAt(i + (2 * 4));
                 Button fouthButton = ListOfButtons.ElementAt(i + (3 * 4));
 
+                //DelegateAIandEnemy DelegateAI = isAI;
 
-                if (isAI(firstButton) && isAI(secondButton) && isAI(thirdButton))
-                {
-                    if (fouthButton.IsEnabled == true)
-                    {
-                        PerformMove(fouthButton);
-                        return true;
-                    }
-                }
+                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIandEnemy))
+                    return true;
 
-                else if (isAI(firstButton) && isAI(secondButton) && isAI(fouthButton))
-                {
-                    if (thirdButton.IsEnabled == true)
-                    {
-                        PerformMove(thirdButton);
-                        return true;
-                    }
-                }
+                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIandEnemy))
+                    return true;
 
-                else if (isAI(firstButton) && isAI(thirdButton) && isAI(fouthButton))
-                {
-                    if (secondButton.IsEnabled == true)
-                    {
-                        PerformMove(secondButton);
-                        return true;
-                    }
-                }
+                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIandEnemy))
+                    return true;
 
-                else if (isAI(secondButton) && isAI(thirdButton) && isAI(fouthButton))
-                {
-                    if (firstButton.IsEnabled == true)
-                    {
-                        PerformMove(firstButton);
-                        return true;
-                    }
-                }
+                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIandEnemy))
+                    return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Проверяем может ли компьютер следующим ходом выиграть игру по диагонали
+        /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по диагонали
         /// </summary>
-        public static bool isDiagonalWin(List<Button> ListOfButtons)
+        private static bool isDiagonalWin(List<Button> ListOfButtons, DelegateAIandEnemy DelegateAIandEnemy)
         {
             /* A1 A2 A3 A4
              * B1 B2 B3 B4
@@ -203,9 +172,9 @@ namespace TicTacToe_4x4
             Button firstBottomRight = ListOfButtons.ElementAt(10); // C3
             Button secondBottomRight = ListOfButtons.ElementAt(15); // D4
 
-            if (checkTopLeftToBottomRight(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight))
+            if (checkTopLeftToBottomRight(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIandEnemy))
                 return true;
-            else if (checkBottomLeftToTopRight(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight))
+            else if (checkBottomLeftToTopRight(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIandEnemy))
                 return true;
             return false;
         }
@@ -213,292 +182,45 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем 1-ю диагональ (с левого верхнего угла до правого нижнего угла)
         /// </summary>
-        private static bool checkTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight)
+        private static bool checkTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight, DelegateAIandEnemy DelegateAIandEnemy)
         {
-            if (isAI(firstTopLeft) && isAI(secondTopLeft) && isAI(firstBottomRight))
-            {
-                if (secondBottomRight.IsEnabled == true)
-                {
-                    PerformMove(secondBottomRight);
-                    return true;
-                }
-            }
-            else if (isAI(firstTopLeft) && isAI(secondTopLeft) && isAI(secondBottomRight))
-            {
-                if (firstBottomRight.IsEnabled == true)
-                {
-                    PerformMove(firstBottomRight);
-                    return true;
-                }
-            }
-            else if (isAI(firstTopLeft) && isAI(firstBottomRight) && isAI(secondBottomRight))
-            {
-                if (secondTopLeft.IsEnabled == true)
-                {
-                    PerformMove(secondTopLeft);
-                    return true;
-                }
-            }
-            else if (isAI(secondTopLeft) && isAI(firstBottomRight) && isAI(secondBottomRight))
-            {
-                if (firstTopLeft.IsEnabled == true)
-                {
-                    PerformMove(firstTopLeft);
-                    return true;
-                }
-            }
+
+            if (inRow(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIandEnemy))
+                return true;
+
+            else if (inRow(firstTopLeft, secondTopLeft, secondBottomRight, firstBottomRight, DelegateAIandEnemy))
+                return true;
+
+            else if (inRow(firstTopLeft, firstBottomRight, secondBottomRight, secondTopLeft, DelegateAIandEnemy))
+                return true;
+
+            else if (inRow(secondTopLeft, firstBottomRight, secondBottomRight, firstTopLeft, DelegateAIandEnemy))
+                return true;
+
             return false;
         }
 
         /// <summary>
         /// Проверяем 2-ю диагональ (с левого нижнего угла до правого верхнего угла)
         /// </summary>
-        private static bool checkBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight)
+        private static bool checkBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight, DelegateAIandEnemy DelegateAIandEnemy)
         {
-            if (isAI(firstBottomLeft) && isAI(secondBottomLeft) && isAI(firstTopRight))
-            {
-                if (secondTopRight.IsEnabled == true)
-                {
-                    PerformMove(secondTopRight);
-                    return true;
-                }
-            }
-            else if (isAI(firstBottomLeft) && isAI(secondBottomLeft) && isAI(secondTopRight))
-            {
-                if (firstTopRight.IsEnabled == true)
-                {
-                    PerformMove(firstTopRight);
-                    return true;
-                }
-            }
-            else if (isAI(firstBottomLeft) && isAI(firstTopRight) && isAI(secondTopRight))
-            {
-                if (secondBottomLeft.IsEnabled == true)
-                {
-                    PerformMove(secondBottomLeft);
-                    return true;
-                }
-            }
-            else if (isAI(secondBottomLeft) && isAI(firstTopRight) && isAI(secondTopRight))
-            {
-                if (firstBottomLeft.IsEnabled == true)
-                {
-                    PerformMove(firstBottomLeft);
-                    return true;
-                }
-            }
-            return false;
-        }
 
-        /// <summary>
-        /// Проверяем может ли человек следующим ходом выиграть игру по горизонтали
-        /// </summary>
-        private static bool isEnemyHorizontalWin(List<Button> ListOfButtons)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Button firstButton = ListOfButtons.ElementAt(i * 4);
-                Button secondButton = ListOfButtons.ElementAt((i * 4) + 1);
-                Button thirdButton = ListOfButtons.ElementAt((i * 4) + 2);
-                Button fouthButton = ListOfButtons.ElementAt((i * 4) + 3);
-
-                if (isEnemy(firstButton) && isEnemy(secondButton) && isEnemy(thirdButton))
-                {
-                    if (fouthButton.IsEnabled == true)
-                    {
-                        PerformMove(fouthButton);
-                        return true;
-                    }
-                }
-
-                else if (isEnemy(firstButton) && isEnemy(secondButton) && isEnemy(fouthButton))
-                {
-                    if (thirdButton.IsEnabled == true)
-                    {
-                        PerformMove(thirdButton);
-                        return true;
-                    }
-                }
-
-                else if (isEnemy(firstButton) && isEnemy(thirdButton) && isEnemy(fouthButton))
-                {
-                    if (secondButton.IsEnabled == true)
-                    {
-                        PerformMove(secondButton);
-                        return true;
-                    }
-                }
-
-                else if (isEnemy(secondButton) && isEnemy(thirdButton) && isEnemy(fouthButton))
-                {
-                    if (firstButton.IsEnabled == true)
-                    {
-                        PerformMove(firstButton);
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Проверяем может ли человек следующим ходом выиграть игру по вертикали
-        /// </summary>
-        private static bool isEnemyVerticalWin(List<Button> ListOfButtons)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Button firstButton = ListOfButtons.ElementAt(i);
-                Button secondButton = ListOfButtons.ElementAt(i + (1 * 4));
-                Button thirdButton = ListOfButtons.ElementAt(i + (2 * 4));
-                Button fouthButton = ListOfButtons.ElementAt(i + (3 * 4));
-
-
-                if (isEnemy(firstButton) && isEnemy(secondButton) && isEnemy(thirdButton))
-                {
-                    if (fouthButton.IsEnabled == true)
-                    {
-                        PerformMove(fouthButton);
-                        return true;
-                    }
-                }
-
-                else if (isEnemy(firstButton) && isEnemy(secondButton) && isEnemy(fouthButton))
-                {
-                    if (thirdButton.IsEnabled == true)
-                    {
-                        PerformMove(thirdButton);
-                        return true;
-                    }
-                }
-
-                else if (isEnemy(firstButton) && isEnemy(thirdButton) && isEnemy(fouthButton))
-                {
-                    if (secondButton.IsEnabled == true)
-                    {
-                        PerformMove(secondButton);
-                        return true;
-                    }
-                }
-
-                else if (isEnemy(secondButton) && isEnemy(thirdButton) && isEnemy(fouthButton))
-                {
-                    if (firstButton.IsEnabled == true)
-                    {
-                        PerformMove(firstButton);
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Проверяем может ли человек следующим ходом выиграть игру по диагонали
-        /// </summary>
-        public static bool isEnemyDiagonalWin(List<Button> ListOfButtons)
-        {
-            /* A1 A2 A3 A4
-             * B1 B2 B3 B4
-             * C1 C2 C3 C4
-             * D1 D2 D3 D4 */
-
-            Button firstTopLeft = ListOfButtons.ElementAt(0); // A1
-            Button secondTopLeft = ListOfButtons.ElementAt(5); // B2
-            Button firstTopRight = ListOfButtons.ElementAt(3); // A4
-            Button secondTopRight = ListOfButtons.ElementAt(6); // B3
-            Button firstBottomLeft = ListOfButtons.ElementAt(12); // D1
-            Button secondBottomLeft = ListOfButtons.ElementAt(9); // C2
-            Button firstBottomRight = ListOfButtons.ElementAt(10); // C3
-            Button secondBottomRight = ListOfButtons.ElementAt(15); // D4
-
-            if (checkEnemyTopLeftToBottomRight(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight))
+            if (inRow(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIandEnemy))
                 return true;
-            else if (checkEnemyBottomLeftToTopRight(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight))
+
+            else if (inRow(firstBottomLeft, secondBottomLeft, secondTopRight, firstTopRight, DelegateAIandEnemy))
                 return true;
-            
+
+            else if (inRow(firstBottomLeft, firstTopRight, secondTopRight, secondBottomLeft, DelegateAIandEnemy))
+                return true;
+
+            else if (inRow(secondBottomLeft, firstTopRight, secondTopRight, firstBottomLeft, DelegateAIandEnemy))
+                return true;
+
             return false;
         }
 
-        /// <summary>
-        /// Проверяем 1-ю диагональ (с левого верхнего угла до правого нижнего угла)
-        /// </summary>
-        private static bool checkEnemyTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight)
-        {
-            if (isEnemy(firstTopLeft) && isEnemy(secondTopLeft) && isEnemy(firstBottomRight))
-            {
-                if (secondBottomRight.IsEnabled == true)
-                {
-                    PerformMove(secondBottomRight);
-                    return true;
-                }
-            }
-            else if (isEnemy(firstTopLeft) && isEnemy(secondTopLeft) && isEnemy(secondBottomRight))
-            {
-                if (firstBottomRight.IsEnabled == true)
-                {
-                    PerformMove(firstBottomRight);
-                    return true;
-                }
-            }
-            else if (isEnemy(firstTopLeft) && isEnemy(firstBottomRight) && isEnemy(secondBottomRight))
-            {
-                if (secondTopLeft.IsEnabled == true)
-                {
-                    PerformMove(secondTopLeft);
-                    return true;
-                }
-            }
-            else if (isEnemy(secondTopLeft) && isEnemy(firstBottomRight) && isEnemy(secondBottomRight))
-            {
-                if (firstTopLeft.IsEnabled == true)
-                {
-                    PerformMove(firstTopLeft);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Проверяем 2-ю диагональ (с левого нижнего угла до правого верхнего угла)
-        /// </summary>
-        private static bool checkEnemyBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight)
-        {
-            if (isEnemy(firstBottomLeft) && isEnemy(secondBottomLeft) && isEnemy(firstTopRight))
-            {
-                if (secondTopRight.IsEnabled == true)
-                {
-                    PerformMove(secondTopRight);
-                    return true;
-                }
-            }
-            else if (isEnemy(firstBottomLeft) && isEnemy(secondBottomLeft) && isEnemy(secondTopRight))
-            {
-                if (firstTopRight.IsEnabled == true)
-                {
-                    PerformMove(firstTopRight);
-                    return true;
-                }
-            }
-            else if (isEnemy(firstBottomLeft) && isEnemy(firstTopRight) && isEnemy(secondTopRight))
-            {
-                if (secondBottomLeft.IsEnabled == true)
-                {
-                    PerformMove(secondBottomLeft);
-                    return true;
-                }
-            }
-            else if (isEnemy(secondBottomLeft) && isEnemy(firstTopRight) && isEnemy(secondTopRight))
-            {
-                if (firstBottomLeft.IsEnabled == true)
-                {
-                    PerformMove(firstBottomLeft);
-                    return true;
-                }
-            }
-            return false;
-        }
 
 
         /*************************
@@ -521,6 +243,19 @@ namespace TicTacToe_4x4
                 return true;
             }
 
+            return false;
+        }
+
+        private static bool inRow(Button first, Button second, Button third, Button fouth, DelegateAIandEnemy DelegateAIandEnemy)
+        {
+            if (DelegateAIandEnemy(first) && DelegateAIandEnemy(second) && DelegateAIandEnemy(third))
+            {
+                if (fouth.IsEnabled == true)
+                {
+                    PerformMove(fouth);
+                    return true;
+                }
+            }
             return false;
         }
     }
