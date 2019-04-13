@@ -21,7 +21,6 @@ namespace TicTacToe_4x4
         public const string X_SYMBOL = "X";
 
         delegate bool DelegateAIorEnemy(Button button);
-        
 
         public static void MoveAI(List<Button> ListOfButtons, List<Button> BEST_MOVES)
         {
@@ -107,8 +106,6 @@ namespace TicTacToe_4x4
                 Button thirdButton = ListOfButtons.ElementAt((i * 4) + 2);
                 Button fouthButton = ListOfButtons.ElementAt((i * 4) + 3);
 
-                //DelegateAIorEnemy DelegateAI = isAI;
-
                 if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
                     return true;
 
@@ -135,8 +132,6 @@ namespace TicTacToe_4x4
                 Button secondButton = ListOfButtons.ElementAt(i + (1 * 4));
                 Button thirdButton = ListOfButtons.ElementAt(i + (2 * 4));
                 Button fouthButton = ListOfButtons.ElementAt(i + (3 * 4));
-
-                //DelegateAIorEnemy DelegateAI = isAI;
 
                 if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
                     return true;

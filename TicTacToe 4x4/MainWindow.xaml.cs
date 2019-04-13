@@ -123,7 +123,7 @@ namespace TicTacToe_4x4
         }
 
         /// <summary>
-        /// Проверяем 2 диагонали
+        /// Проверяем 2 диагонали 
         /// </summary>
         private GameStatus checkDialog()
         {
