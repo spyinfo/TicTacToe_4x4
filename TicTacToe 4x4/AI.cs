@@ -20,7 +20,7 @@ namespace TicTacToe_4x4
         public const string O_SYMBOL = "O";
         public const string X_SYMBOL = "X";
 
-        delegate bool DelegateAIandEnemy(Button button);
+        delegate bool DelegateAIorEnemy(Button button);
         
 
         public static void MoveAI(List<Button> ListOfButtons, List<Button> BEST_MOVES)
@@ -60,7 +60,7 @@ namespace TicTacToe_4x4
         /// </summary>
         private static bool isAIWin(List<Button> ListOfButtons)
         {
-            DelegateAIandEnemy DelegateAI = isAI;
+            DelegateAIorEnemy DelegateAI = isAI;
 
             if (isHorizontalWin(ListOfButtons, isAI))
                 return true;
@@ -78,7 +78,7 @@ namespace TicTacToe_4x4
         /// </summary>
         private static bool isHumanWin(List<Button> ListOfButtons)
         {
-            DelegateAIandEnemy DelegateEnemy = isEnemy;
+            DelegateAIorEnemy DelegateEnemy = isEnemy;
 
             if (isHorizontalWin(ListOfButtons, isEnemy))
                 return true;
@@ -98,7 +98,7 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по горизонтали
         /// </summary>
-        private static bool isHorizontalWin(List<Button> ListOfButtons, DelegateAIandEnemy DelegateAIandEnemy)
+        private static bool isHorizontalWin(List<Button> ListOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -107,18 +107,18 @@ namespace TicTacToe_4x4
                 Button thirdButton = ListOfButtons.ElementAt((i * 4) + 2);
                 Button fouthButton = ListOfButtons.ElementAt((i * 4) + 3);
 
-                //DelegateAIandEnemy DelegateAI = isAI;
+                //DelegateAIorEnemy DelegateAI = isAI;
 
-                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIandEnemy))
+                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
                     return true;
 
-                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIandEnemy))
+                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIorEnemy))
                     return true;
 
-                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIandEnemy))
+                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIorEnemy))
                     return true;
 
-                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIandEnemy))
+                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIorEnemy))
                     return true;
             }
             return false;
@@ -127,7 +127,7 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по вертикали
         /// </summary>
-        private static bool isVerticalWin(List<Button> ListOfButtons, DelegateAIandEnemy DelegateAIandEnemy)
+        private static bool isVerticalWin(List<Button> ListOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -136,18 +136,18 @@ namespace TicTacToe_4x4
                 Button thirdButton = ListOfButtons.ElementAt(i + (2 * 4));
                 Button fouthButton = ListOfButtons.ElementAt(i + (3 * 4));
 
-                //DelegateAIandEnemy DelegateAI = isAI;
+                //DelegateAIorEnemy DelegateAI = isAI;
 
-                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIandEnemy))
+                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
                     return true;
 
-                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIandEnemy))
+                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIorEnemy))
                     return true;
 
-                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIandEnemy))
+                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIorEnemy))
                     return true;
 
-                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIandEnemy))
+                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIorEnemy))
                     return true;
             }
             return false;
@@ -156,7 +156,7 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по диагонали
         /// </summary>
-        private static bool isDiagonalWin(List<Button> ListOfButtons, DelegateAIandEnemy DelegateAIandEnemy)
+        private static bool isDiagonalWin(List<Button> ListOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
             /* A1 A2 A3 A4
              * B1 B2 B3 B4
@@ -172,9 +172,9 @@ namespace TicTacToe_4x4
             Button firstBottomRight = ListOfButtons.ElementAt(10); // C3
             Button secondBottomRight = ListOfButtons.ElementAt(15); // D4
 
-            if (checkTopLeftToBottomRight(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIandEnemy))
+            if (checkTopLeftToBottomRight(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIorEnemy))
                 return true;
-            else if (checkBottomLeftToTopRight(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIandEnemy))
+            else if (checkBottomLeftToTopRight(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIorEnemy))
                 return true;
             return false;
         }
@@ -182,19 +182,19 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем 1-ю диагональ (с левого верхнего угла до правого нижнего угла)
         /// </summary>
-        private static bool checkTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight, DelegateAIandEnemy DelegateAIandEnemy)
+        private static bool checkTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight, DelegateAIorEnemy DelegateAIorEnemy)
         {
 
-            if (inRow(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIandEnemy))
+            if (inRow(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIorEnemy))
                 return true;
 
-            else if (inRow(firstTopLeft, secondTopLeft, secondBottomRight, firstBottomRight, DelegateAIandEnemy))
+            else if (inRow(firstTopLeft, secondTopLeft, secondBottomRight, firstBottomRight, DelegateAIorEnemy))
                 return true;
 
-            else if (inRow(firstTopLeft, firstBottomRight, secondBottomRight, secondTopLeft, DelegateAIandEnemy))
+            else if (inRow(firstTopLeft, firstBottomRight, secondBottomRight, secondTopLeft, DelegateAIorEnemy))
                 return true;
 
-            else if (inRow(secondTopLeft, firstBottomRight, secondBottomRight, firstTopLeft, DelegateAIandEnemy))
+            else if (inRow(secondTopLeft, firstBottomRight, secondBottomRight, firstTopLeft, DelegateAIorEnemy))
                 return true;
 
             return false;
@@ -203,19 +203,19 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем 2-ю диагональ (с левого нижнего угла до правого верхнего угла)
         /// </summary>
-        private static bool checkBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight, DelegateAIandEnemy DelegateAIandEnemy)
+        private static bool checkBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight, DelegateAIorEnemy DelegateAIorEnemy)
         {
 
-            if (inRow(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIandEnemy))
+            if (inRow(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIorEnemy))
                 return true;
 
-            else if (inRow(firstBottomLeft, secondBottomLeft, secondTopRight, firstTopRight, DelegateAIandEnemy))
+            else if (inRow(firstBottomLeft, secondBottomLeft, secondTopRight, firstTopRight, DelegateAIorEnemy))
                 return true;
 
-            else if (inRow(firstBottomLeft, firstTopRight, secondTopRight, secondBottomLeft, DelegateAIandEnemy))
+            else if (inRow(firstBottomLeft, firstTopRight, secondTopRight, secondBottomLeft, DelegateAIorEnemy))
                 return true;
 
-            else if (inRow(secondBottomLeft, firstTopRight, secondTopRight, firstBottomLeft, DelegateAIandEnemy))
+            else if (inRow(secondBottomLeft, firstTopRight, secondTopRight, firstBottomLeft, DelegateAIorEnemy))
                 return true;
 
             return false;
@@ -246,9 +246,9 @@ namespace TicTacToe_4x4
             return false;
         }
 
-        private static bool inRow(Button first, Button second, Button third, Button fouth, DelegateAIandEnemy DelegateAIandEnemy)
+        private static bool inRow(Button first, Button second, Button third, Button fouth, DelegateAIorEnemy DelegateAIorEnemy)
         {
-            if (DelegateAIandEnemy(first) && DelegateAIandEnemy(second) && DelegateAIandEnemy(third))
+            if (DelegateAIorEnemy(first) && DelegateAIorEnemy(second) && DelegateAIorEnemy(third))
             {
                 if (fouth.IsEnabled == true)
                 {

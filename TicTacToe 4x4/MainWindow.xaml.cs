@@ -21,7 +21,7 @@ namespace TicTacToe_4x4
     public partial class MainWindow : Window
     {
         private List<Button> ListOfButtons;
-        public static List<Button> BEST_MOVES;
+        public List<Button> BEST_MOVES;
 
         public MainWindow()
         {
@@ -39,7 +39,7 @@ namespace TicTacToe_4x4
                 B2, C3, B3, C2,
                 A1, D4, D1, A4,
                 A2, A3, B1, C1,
-                D2, D3, B4, C4};
+                D2, D3, B4, C4 };
 
         }
 
@@ -60,26 +60,13 @@ namespace TicTacToe_4x4
         private bool CheckWinner()
         {
             GameStatus status = checkHorizontal(); // проверяем строки
-            if (status.isGameOver)
-            {
-                status.winner = (status.winner == "O") ? ("К сожалению, Вы проиграли!") : ("Поздравляем, Вы выиграли");
-                MessageBox.Show(status.winner);
-                return true;
-            }
+            if (isOver(status)) return true;
+
             status = checkVertical(); // проверяем столбцы
-            if (status.isGameOver)
-            {
-                status.winner = (status.winner == "O") ? ("К сожалению, Вы проиграли!") : ("Поздравляем, Вы выиграли!");
-                MessageBox.Show(status.winner);
-                return true;
-            }
+            if (isOver(status)) return true;
+
             status = checkDialog(); // проверяем 2 диагонали
-            if (status.isGameOver)
-            {
-                status.winner = (status.winner == "O") ? ("К сожалению, Вы проиграли!") : ("Поздравляем, Вы выиграли!");
-                MessageBox.Show(status.winner);
-                return true;
-            }
+            if (isOver(status)) return true;
 
             if (checkForTie()) // проверяем на возможность ничьи
             {
@@ -89,6 +76,9 @@ namespace TicTacToe_4x4
             return false;
         }
 
+        /// <summary>
+        /// Проверяем строки
+        /// </summary>
         private GameStatus checkHorizontal()
         {
             bool gameOver = false;
@@ -109,6 +99,9 @@ namespace TicTacToe_4x4
             return new GameStatus(gameOver, winner, false);
         }
 
+        /// <summary>
+        /// Проверяем столбцы
+        /// </summary>
         private GameStatus checkVertical()
         {
             bool gameOver = false;
@@ -129,6 +122,9 @@ namespace TicTacToe_4x4
             return new GameStatus(gameOver, winner, false);
         }
 
+        /// <summary>
+        /// Проверяем 2 диагонали
+        /// </summary>
         private GameStatus checkDialog()
         {
             bool gameOver = false;
@@ -156,6 +152,20 @@ namespace TicTacToe_4x4
                     tie = false;
             }
             return tie;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool isOver(GameStatus status)
+        {
+            if (status.isGameOver)
+            {
+                status.winner = (status.winner == "O") ? ("К сожалению, Вы проиграли!") : ("Поздравляем, Вы выиграли!");
+                MessageBox.Show(status.winner);
+                return true;
+            }
+            return false;
         }
 
 
