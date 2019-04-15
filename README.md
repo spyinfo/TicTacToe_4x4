@@ -6,4 +6,3 @@
 
 ![tictactoe](http://ipic.su/img/img7/fs/img.1555343407.png) 
 
-![win](http://ipic.su/img/img7/fs/img2.1555343768.png)
