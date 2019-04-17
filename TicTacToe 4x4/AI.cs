@@ -15,28 +15,43 @@ using System.Windows.Shapes;
 
 namespace TicTacToe_4x4
 {
-    class AI
+    static class AI
     {
-        public const string O_SYMBOL = "O";
-        public const string X_SYMBOL = "X";
+        private static readonly string O_SYMBOL = "O";
+        private static readonly string X_SYMBOL = "X";
+        private static readonly int size = 4;
 
         delegate bool DelegateAIorEnemy(Button button);
 
-        public static void MoveAI(List<Button> ListOfButtons, List<Button> BEST_MOVES)
+        /// <summary>
+        /// Главный метод класса AI
+        /// </summary>
+        /// <param name="listOfButtons">Список кнопок</param>
+        /// <param name="bestMoves">Список лучших ходов</param>
+        public static void MoveAI(List<Button> listOfButtons, List<Button> bestMoves)
         {
-            if (isAIWin(ListOfButtons)) // если следующим ходом выиграет компьютер, то выбираем этот ход
-                return;
+            bool isAIWinBool = false;
+            bool isHumanWinBool = false;
 
-            else if (isHumanWin(ListOfButtons)) // если следующим ходом выиграет человек, то блокируем этот ход
-                return;
+            DelegateAIorEnemy DelegateAI = isAI;
+            DelegateAIorEnemy DelegateEnemy = isEnemy;
 
-            foreach (var button in BEST_MOVES) // иначе выбираем лучший из доступных ходов
+            if (isWin(listOfButtons, isAI))
+                isAIWinBool = true;
+
+            else if (isWin(listOfButtons, isEnemy))
+                isHumanWinBool = true;
+
+            else if ((isAIWinBool == false) && (isHumanWinBool == false))
             {
-                if (button.IsEnabled == true)
+                foreach (var button in bestMoves) // иначе выбираем лучший из доступных ходов
                 {
-                    button.Content = O_SYMBOL;
-                    button.IsEnabled = false;
-                    return;
+                    if (button.IsEnabled == true)
+                    {
+                        button.Content = O_SYMBOL;
+                        button.IsEnabled = false;
+                        return; 
+                    }
                 }
             }
         }
@@ -45,6 +60,7 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Ход компьютера
         /// </summary>
+        /// <param name="button">Кнопка на которой изменим значение</param>
         private static void PerformMove(Button button)
         {
             button.Content = O_SYMBOL;
@@ -52,42 +68,26 @@ namespace TicTacToe_4x4
         }
 
 
-
-        
         /// <summary>
-        /// Если следующим ходом выиграет компьютер, то выбираем этот ход
+        /// Проверяем победит ли человек или компьютер в следующем ходу
         /// </summary>
-        private static bool isAIWin(List<Button> ListOfButtons)
+        /// <param name="listOfButtons">Список кнопок</param>
+        /// <param name="DelegateAIorEnemy">Делегат противник это или человек</param>
+        /// <returns></returns>
+        private static bool isWin(List<Button> listOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
-            DelegateAIorEnemy DelegateAI = isAI;
+            bool returnValue = false;
 
-            if (isHorizontalWin(ListOfButtons, isAI))
-                return true;
+            if (isHorizontalWin(listOfButtons, DelegateAIorEnemy))
+                returnValue = true;
 
-            else if (isVerticalWin(ListOfButtons, isAI))
-                return true;
+            else if (isVerticalWin(listOfButtons, DelegateAIorEnemy) && returnValue == false)
+                returnValue = true;
 
-            else if (isDiagonalWin(ListOfButtons, isAI))
-                return true;
-            return false;
-        }
+            else if (isDiagonalWin(listOfButtons, DelegateAIorEnemy) && returnValue == false)
+                returnValue = true;
 
-        /// <summary>
-        /// Если следующим ходом выиграет человек, то блокируем этот ход
-        /// </summary>
-        private static bool isHumanWin(List<Button> ListOfButtons)
-        {
-            DelegateAIorEnemy DelegateEnemy = isEnemy;
-
-            if (isHorizontalWin(ListOfButtons, isEnemy))
-                return true;
-
-            else if (isVerticalWin(ListOfButtons, isEnemy))
-                return true;
-
-            else if (isDiagonalWin(ListOfButtons, isEnemy))
-                return true;
-            return false;
+            return returnValue;
         }
 
 
@@ -97,161 +97,165 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по горизонтали
         /// </summary>
-        private static bool isHorizontalWin(List<Button> ListOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
+        /// <param name="listOfButtons">Список кнопок</param>
+        /// <param name="DelegateAIorEnemy">Делегат противник это или человек</param>
+        /// <returns>True = горизонтальная победа. </returns>
+        private static bool isHorizontalWin(List<Button> listOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
-            for (int i = 0; i < 4; i++)
+            bool returnValue = false;
+            for (int i = 0; i < size; i++)
             {
-                Button firstButton = ListOfButtons.ElementAt(i * 4);
-                Button secondButton = ListOfButtons.ElementAt((i * 4) + 1);
-                Button thirdButton = ListOfButtons.ElementAt((i * 4) + 2);
-                Button fouthButton = ListOfButtons.ElementAt((i * 4) + 3);
+                Button firstButton = listOfButtons.ElementAt(i * size);
+                Button secondButton = listOfButtons.ElementAt((i * size) + 1);
+                Button thirdButton = listOfButtons.ElementAt((i * size) + 2);
+                Button fouthButton = listOfButtons.ElementAt((i * size) + 3);
 
-                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
-                    return true;
-
-                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIorEnemy))
-                    return true;
-
-                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIorEnemy))
-                    return true;
-
-                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIorEnemy))
-                    return true;
+                isWinOnThreeSides(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy, ref returnValue);
             }
-            return false;
+            return returnValue;
         }
+
 
         /// <summary>
         /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по вертикали
         /// </summary>
-        private static bool isVerticalWin(List<Button> ListOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
+        /// <param name="listOfButtons">Список кнопок</param>
+        /// <param name="DelegateAIorEnemy">Делегат противник это или человек</param>
+        /// <returns>True = вертильная победа. </returns>
+        private static bool isVerticalWin(List<Button> listOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
-            for (int i = 0; i < 4; i++)
+            bool returnValue = false;
+
+            for (int i = 0; i < size; i++)
             {
-                Button firstButton = ListOfButtons.ElementAt(i);
-                Button secondButton = ListOfButtons.ElementAt(i + (1 * 4));
-                Button thirdButton = ListOfButtons.ElementAt(i + (2 * 4));
-                Button fouthButton = ListOfButtons.ElementAt(i + (3 * 4));
+                Button firstButton = listOfButtons.ElementAt(i);
+                Button secondButton = listOfButtons.ElementAt(i + (1 * 4));
+                Button thirdButton = listOfButtons.ElementAt(i + (2 * 4));
+                Button fouthButton = listOfButtons.ElementAt(i + (3 * 4));
 
-                if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
-                    return true;
-
-                else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIorEnemy))
-                    return true;
-
-                else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIorEnemy))
-                    return true;
-
-                else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIorEnemy))
-                    return true;
+                isWinOnThreeSides(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy, ref returnValue);
             }
-            return false;
+            return returnValue;
         }
 
         /// <summary>
         /// Проверяем может ли компьютер или человек следующим ходом выиграть игру по диагонали
         /// </summary>
-        private static bool isDiagonalWin(List<Button> ListOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
+        /// <param name="listOfButtons">Список кнопок</param>
+        /// <param name="DelegateAIorEnemy">Делегат противник это или человек</param>
+        /// <returns>True = диагональя победа. </returns>
+        private static bool isDiagonalWin(List<Button> listOfButtons, DelegateAIorEnemy DelegateAIorEnemy)
         {
             /* A1 A2 A3 A4
              * B1 B2 B3 B4
              * C1 C2 C3 C4
              * D1 D2 D3 D4 */
+            bool returnValue = false;
 
-            Button firstTopLeft = ListOfButtons.ElementAt(0); // A1
-            Button secondTopLeft = ListOfButtons.ElementAt(5); // B2
-            Button firstTopRight = ListOfButtons.ElementAt(3); // A4
-            Button secondTopRight = ListOfButtons.ElementAt(6); // B3
-            Button firstBottomLeft = ListOfButtons.ElementAt(12); // D1
-            Button secondBottomLeft = ListOfButtons.ElementAt(9); // C2
-            Button firstBottomRight = ListOfButtons.ElementAt(10); // C3
-            Button secondBottomRight = ListOfButtons.ElementAt(15); // D4
+            Button firstTopLeft = listOfButtons.ElementAt(0); // A1
+            Button secondTopLeft = listOfButtons.ElementAt(5); // B2
+            Button firstTopRight = listOfButtons.ElementAt(3); // A4
+            Button secondTopRight = listOfButtons.ElementAt(6); // B3
+            Button firstBottomLeft = listOfButtons.ElementAt(12); // D1
+            Button secondBottomLeft = listOfButtons.ElementAt(9); // C2
+            Button firstBottomRight = listOfButtons.ElementAt(10); // C3
+            Button secondBottomRight = listOfButtons.ElementAt(15); // D4
 
-            if (checkTopLeftToBottomRight(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIorEnemy))
-                return true;
-            else if (checkBottomLeftToTopRight(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIorEnemy))
-                return true;
-            return false;
+            if (isWinOnThreeSides(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIorEnemy, ref returnValue))
+                returnValue = true;
+
+            else if (isWinOnThreeSides(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIorEnemy, ref returnValue))
+                returnValue = true;
+
+            return returnValue;
         }
+
+
+
+
+        /*********************************
+         * ДОПОЛНИТЕЛЬНЫЕ / ОБЩИЕ МЕТОДЫ *
+         *********************************/
 
         /// <summary>
-        /// Проверяем 1-ю диагональ (с левого верхнего угла до правого нижнего угла)
+        /// Компьютер ли это
         /// </summary>
-        private static bool checkTopLeftToBottomRight(Button firstTopLeft, Button secondTopLeft, Button firstBottomRight, Button secondBottomRight, DelegateAIorEnemy DelegateAIorEnemy)
-        {
-
-            if (inRow(firstTopLeft, secondTopLeft, firstBottomRight, secondBottomRight, DelegateAIorEnemy))
-                return true;
-
-            else if (inRow(firstTopLeft, secondTopLeft, secondBottomRight, firstBottomRight, DelegateAIorEnemy))
-                return true;
-
-            else if (inRow(firstTopLeft, firstBottomRight, secondBottomRight, secondTopLeft, DelegateAIorEnemy))
-                return true;
-
-            else if (inRow(secondTopLeft, firstBottomRight, secondBottomRight, firstTopLeft, DelegateAIorEnemy))
-                return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Проверяем 2-ю диагональ (с левого нижнего угла до правого верхнего угла)
-        /// </summary>
-        private static bool checkBottomLeftToTopRight(Button firstBottomLeft, Button secondBottomLeft, Button firstTopRight, Button secondTopRight, DelegateAIorEnemy DelegateAIorEnemy)
-        {
-
-            if (inRow(firstBottomLeft, secondBottomLeft, firstTopRight, secondTopRight, DelegateAIorEnemy))
-                return true;
-
-            else if (inRow(firstBottomLeft, secondBottomLeft, secondTopRight, firstTopRight, DelegateAIorEnemy))
-                return true;
-
-            else if (inRow(firstBottomLeft, firstTopRight, secondTopRight, secondBottomLeft, DelegateAIorEnemy))
-                return true;
-
-            else if (inRow(secondBottomLeft, firstTopRight, secondTopRight, firstBottomLeft, DelegateAIorEnemy))
-                return true;
-
-            return false;
-        }
-
-
-
-        /*************************
-         * ДОПОЛНИТЕЛЬНЫЕ МЕТОДЫ *
-         *************************/
+        /// <param name="button">Кнопка на которой необходио проверить</param>
+        /// <returns>True = это компьютер</returns>
         private static bool isAI(Button button)
         {
-            if (button.Content.Equals(O_SYMBOL))
-            {
-                return true;
-            }
+            bool isAIBool = false;
 
-            return false;
+            if (button.Content.Equals(O_SYMBOL))
+                isAIBool = true;
+
+            return isAIBool;
         }
 
+        /// <summary>
+        /// Человек ли это
+        /// </summary>
+        /// <param name="button">Кнопка на которой необходио проверить</param>
+        /// <returns>True = это человек</returns>
         private static bool isEnemy(Button button)
         {
-            if (button.Content.Equals(X_SYMBOL))
-            {
-                return true;
-            }
+            bool isEnemyBool = false;
 
-            return false;
+            if (button.Content.Equals(X_SYMBOL))
+                isEnemyBool = true;
+
+            return isEnemyBool;
         }
 
+        /// <summary>
+        /// Общий метод для определения победы. Если они все входные кнопки стоят в ряд.
+        /// </summary>
+        /// <param name="firstButton">1-я кнопка</param>
+        /// <param name="secondButton">2-я кнопка</param>
+        /// <param name="thirdButton">3-я кнопка</param>
+        /// <param name="fouthButton">4-я кнопка</param>
+        /// <param name="DelegateAIorEnemy">Делегат противник это или человек</param>
+        /// <param name="returnValue">True = победа</param>
+        /// <returns></returns>
+        private static bool isWinOnThreeSides(Button firstButton, Button secondButton, Button thirdButton, Button fouthButton, DelegateAIorEnemy DelegateAIorEnemy, ref bool returnValue)
+        {
+
+            if (inRow(firstButton, secondButton, thirdButton, fouthButton, DelegateAIorEnemy))
+                returnValue = true;
+
+            else if (inRow(firstButton, secondButton, fouthButton, thirdButton, DelegateAIorEnemy))
+                returnValue = true;
+
+            else if (inRow(firstButton, thirdButton, fouthButton, secondButton, DelegateAIorEnemy))
+                returnValue = true;
+
+            else if (inRow(secondButton, thirdButton, fouthButton, firstButton, DelegateAIorEnemy))
+                returnValue = true;
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Есть ли победа в ряд (по вертикали, по горизонатли, по диагонали)
+        /// </summary>
+        /// <param name="first">1-я кнопка</param>
+        /// <param name="second">2-я кнопка</param>
+        /// <param name="third">3-я кнопка</param>
+        /// <param name="fouth">4-я кнопка</param>
+        /// <param name="DelegateAIorEnemy">Делегат противник это или человек</param>
+        /// <returns>true = есть победа, false = нет победы</returns>
         private static bool inRow(Button first, Button second, Button third, Button fouth, DelegateAIorEnemy DelegateAIorEnemy)
         {
+            bool returnValue = false;
             if (DelegateAIorEnemy(first) && DelegateAIorEnemy(second) && DelegateAIorEnemy(third))
             {
                 if (fouth.IsEnabled == true)
                 {
                     PerformMove(fouth);
-                    return true;
+                    returnValue = true;
                 }
             }
-            return false;
+            return returnValue;
         }
     }
 }

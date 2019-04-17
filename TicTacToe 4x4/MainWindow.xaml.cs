@@ -20,111 +20,109 @@ namespace TicTacToe_4x4
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Button> ListOfButtons;
-        public List<Button> BEST_MOVES;
+        private const int size = 4;
+
+        private List<Button> listOfButtons;
+        private List<Button> bestMoves;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Список кнопок (полей)
-            ListOfButtons = new List<Button>() {
+            listOfButtons = new List<Button>() {
                 A1, A2, A3, A4,
                 B1, B2, B3, B4,
                 C1, C2, C3, C4,
                 D1, D2, D3, D4 };
 
             // Список кнопок (полей) от лучшего к худшему
-            BEST_MOVES = new List<Button>() {
+            bestMoves = new List<Button>() {
                 B2, C3, B3, C2,
                 A1, D4, D1, A4,
                 A2, A3, B1, C1,
                 D2, D3, B4, C4 };
-
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Клик на поле (кнопку)
+        /// </summary>
+        private void ClickOnButton(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
             button.Content = "X";
             button.IsEnabled = false;
 
-            AI.MoveAI(ListOfButtons, BEST_MOVES);
+            AI.MoveAI(listOfButtons, bestMoves);
 
-            CheckWinner();
+            if (CheckWinner())
+            {
+                foreach (var element in listOfButtons)
+                {
+                    element.IsEnabled = true;
+                    element.Content = "";
+                }
+            }
         }
 
         /// <summary>
         /// Проверяем, есть ли победитель
         /// </summary>
+        /// <returns>True = есть победитель. False = нет победителя</returns>
         private bool CheckWinner()
         {
-            GameStatus status = checkHorizontal(); // проверяем строки
-            if (isOver(status)) return true;
+            bool returnValue = false;
 
-            status = checkVertical(); // проверяем столбцы
-            if (isOver(status)) return true;
+            // Двумерный массив кнопок (полей)
+            Button[,] arrayOfButtons = new Button[size, size]
+            {
+                {A1, A2, A3, A4},
+                {B1, B2, B3, B4},
+                {C1, C2, C3, C4},
+                {D1, D2, D3, D4},
+            };
+
+            GameStatus status = checkHorizontalAndVertical(arrayOfButtons); // проверяем строки и столбцы
+            if (isOver(status)) returnValue = true;
 
             status = checkDialog(); // проверяем 2 диагонали
-            if (isOver(status)) return true;
+            if (isOver(status)) returnValue = true;
 
-            if (checkForTie()) // проверяем на возможность ничьи
+            if (checkForTie() && returnValue == false) // проверяем на возможность ничьи
             {
                 MessageBox.Show("Ничья. Вы сумели свести игру в ничью.");
-                return true;
+                returnValue = true;
             }
-            return false;
+            return returnValue;
         }
 
+
         /// <summary>
-        /// Проверяем строки
+        /// Проверяем строки и столбцы
         /// </summary>
-        private GameStatus checkHorizontal()
+        /// <param name="arrayOfButtons">Двумерный массив кнопок</param>
+        /// <returns>Обновляем статус игры</returns>
+        private GameStatus checkHorizontalAndVertical(Button[,] arrayOfButtons)
         {
             bool gameOver = false;
             string winner = null;
 
-            if (GameStatus.isEquals(A1, A2, A3, A4, ref gameOver))
-                winner = Convert.ToString(A1.Content);
-            
-            else if (GameStatus.isEquals(B1, B2, B3, B4, ref gameOver))
-                winner = Convert.ToString(B1.Content);
+            for (int i = 0; i < size; i++)
+            {
+                if (GameStatus.isEquals(arrayOfButtons[i, 0], arrayOfButtons[i, 1], arrayOfButtons[i, 2], arrayOfButtons[i, 3], ref gameOver))
+                    winner = Convert.ToString(arrayOfButtons[i, 0].Content);
 
-            else if (GameStatus.isEquals(C1, C2, C3, C4, ref gameOver))
-                winner = Convert.ToString(C1.Content);
-
-            else if (GameStatus.isEquals(D1, D2, D3, D4, ref gameOver))
-                winner = Convert.ToString(D1.Content);
-
+                if (GameStatus.isEquals(arrayOfButtons[0, i], arrayOfButtons[1, i], arrayOfButtons[2, i], arrayOfButtons[3, i], ref gameOver))
+                    winner = Convert.ToString(arrayOfButtons[0, i].Content);
+            }
             return new GameStatus(gameOver, winner, false);
         }
 
-        /// <summary>
-        /// Проверяем столбцы
-        /// </summary>
-        private GameStatus checkVertical()
-        {
-            bool gameOver = false;
-            string winner = null;
-
-            if (GameStatus.isEquals(A1, B1, C1, D1, ref gameOver))
-                winner = Convert.ToString(A1.Content);
-
-            else if (GameStatus.isEquals(A2, B2, C2, D2, ref gameOver))
-                winner = Convert.ToString(B2.Content);
-
-            else if (GameStatus.isEquals(A3, B3, C3, D3, ref gameOver))
-                winner = Convert.ToString(C3.Content);
-
-            else if (GameStatus.isEquals(A4, B4, C4, D4, ref gameOver))
-                winner = Convert.ToString(D4.Content);
-
-            return new GameStatus(gameOver, winner, false);
-        }
 
         /// <summary>
         /// Проверяем 2 диагонали 
         /// </summary>
+        /// <returns>Обновляем статус игры</returns>
         private GameStatus checkDialog()
         {
             bool gameOver = false;
@@ -143,10 +141,11 @@ namespace TicTacToe_4x4
         /// <summary>
         /// Проверяем на ничью
         /// </summary>
+        /// <returns>True = ничья</returns>
         private bool checkForTie()
         {
             bool tie = true;
-            foreach (var button in ListOfButtons)
+            foreach (var button in listOfButtons)
             {
                 if (button.IsEnabled == true)
                     tie = false;
@@ -155,17 +154,19 @@ namespace TicTacToe_4x4
         }
 
         /// <summary>
-        /// 
+        /// Достигнут ли конец игры
         /// </summary>
+        /// <param name="status">Статус игры</param>
+        /// <returns>True = есть победитель. False = нет победителя</returns>
         private bool isOver(GameStatus status)
         {
-            if (status.isGameOver)
+            bool returnValue = false;
+            if (status.gameOver)
             {
-                status.winner = (status.winner == "O") ? ("К сожалению, Вы проиграли!") : ("Поздравляем, Вы выиграли!");
-                MessageBox.Show(status.winner);
-                return true;
+                MessageBox.Show((status.winner == "O") ? ("К сожалению, Вы проиграли!") : ("Поздравляем, Вы выиграли!"));
+                returnValue = true;
             }
-            return false;
+            return returnValue;
         }
 
 
@@ -174,7 +175,7 @@ namespace TicTacToe_4x4
         /// </summary>
         private void Button_Click_Restart(object sender, RoutedEventArgs e)
         {
-            foreach (var button in ListOfButtons)
+            foreach (var button in listOfButtons)
             {
                 button.IsEnabled = true;
                 button.Content = "";
@@ -187,7 +188,7 @@ namespace TicTacToe_4x4
         private void Button_Click_About(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Developed by Parviz Abdulloev"
-            + Environment.NewLine 
+            + Environment.NewLine
             + "for Glusker A.I. in the course of practical work."
             + Environment.NewLine, "About");
         }
